@@ -61,10 +61,10 @@ public class CheckOutPageTest extends Hook {
 
     @Test
     public void testCheckoutWithCartEmpty(){
+        setupEmptyCart();
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "URL mismatch!");
 
-        setupEmptyCart();
         yourCartPage.clickCheckoutButton();
         //chỉ checkout với số lượng sản phẩm trong giỏ lớn hơn 0
         Assert.assertEquals(driver.getCurrentUrl(),"https://www.saucedemo.com/cart.html","URL mismatch!");
