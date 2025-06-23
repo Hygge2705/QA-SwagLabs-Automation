@@ -26,7 +26,7 @@ public class CheckOutPageUI {
 
     public static final By ERROR_MESSAGE = By.className("error");
     public static final By ERROR_BUTTON = By.className("error-button");
-    public static final By ERROR_ICON = By.className("error-icon");
+    public static final By ERROR_ICON = By.cssSelector("[data-icon='times-circle']");
 
     //Checkout: Overview
     public static final By QTY = By.className("cart_quantity_label");

@@ -88,12 +88,11 @@ public class InventoryPageTest extends Hook {
         if (selectedProducts.containsKey(productName)){
             inventoryPage.clickRemove(productName);
             Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
-            Assert.assertTrue(inventoryPage.isButtonAddToCart(productName), "Add to cart button for " + productName + " is not displayed!");
-        }else {
-            inventoryPage.clickAddToCart(productName);
-            Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
-            Assert.assertFalse(inventoryPage.isButtonAddToCart(productName));
+            Assert.assertFalse(inventoryPage.isButtonAddToCart(productName), "Add to cart button for " + productName + " is not displayed!");
         }
+        inventoryPage.clickAddToCart(productName);
+        Assert.assertFalse(inventoryPage.isButtonAddToCart(productName));
+        Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
     }
 
     @Test
@@ -106,12 +105,12 @@ public class InventoryPageTest extends Hook {
 
         if(inventoryPage.isButtonAddToCart(productName1)){
             inventoryPage.clickAddToCart(productName1);
-            Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
             Assert.assertFalse(inventoryPage.isButtonAddToCart(productName1), "Remove button for " + productName1 + " is not displayed!");
+            Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
         }
         inventoryPage.clickRemove(productName1);
-        Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
         Assert.assertTrue(inventoryPage.isButtonAddToCart(productName1));
+        Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
     }
 
 
@@ -161,20 +160,16 @@ public class InventoryPageTest extends Hook {
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "URL mismatch!");
         Assert.assertEquals(inventoryPage.getTitleInventoryPage(), "Products", "Title mismatch!");
 
-        int numOfCart = inventoryPage.checkNumOfCart();
         String productName = "Sauce Labs Backpack";
 
         if (!inventoryPage.isButtonAddToCart(productName)){
             inventoryPage.clickRemove(productName);
-            numOfCart --;
-            Assert.assertEquals(inventoryPage.checkNumOfCart(), numOfCart, "Number of products in Shopping Cart is incorrect!");
             Assert.assertTrue(inventoryPage.isButtonAddToCart(productName), "Add to cart button for " + productName + " is not displayed!");
+            Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
         }
-
         inventoryPage.clickAddToCart(productName);
-        numOfCart++;
-        Assert.assertEquals(inventoryPage.checkNumOfCart(), numOfCart, "Number of products in Shopping Cart is incorrect!");
         Assert.assertFalse(inventoryPage.isButtonAddToCart(productName));
+        Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
     }
 
     @Test
@@ -183,19 +178,16 @@ public class InventoryPageTest extends Hook {
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "URL mismatch!");
         Assert.assertEquals(inventoryPage.getTitleInventoryPage(), "Products", "Title mismatch!");
 
-        int numOfCart = inventoryPage.checkNumOfCart();
         String productName1 = "Sauce Labs Backpack";
 
         if(inventoryPage.isButtonAddToCart(productName1)){
             inventoryPage.clickAddToCart(productName1);
-            numOfCart++;
-            Assert.assertEquals(inventoryPage.checkNumOfCart(), numOfCart, "Number of products in Shopping Cart is incorrect!");
             Assert.assertFalse(inventoryPage.isButtonAddToCart(productName1), "Remove button for " + productName1 + " is not displayed!");
+            Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
         }
         inventoryPage.clickRemove(productName1);
-        numOfCart--;
-        Assert.assertEquals(inventoryPage.checkNumOfCart(), numOfCart, "Number of products in Shopping Cart is incorrect!");
         Assert.assertTrue(inventoryPage.isButtonAddToCart(productName1));
+        Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
     }
 
 }

@@ -32,19 +32,20 @@ public class YourCartPageTest extends Hook {
         inventoryPage.clickShoppingCart();
     }
 
+
     @Test
     public void checkYourCartPageUI(){
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "URL mismatch!");
         Assert.assertEquals(yourCartPage.getTitleYourCartPage(), "Your Cart", "Title mismatch!");
 
-        Assert.assertTrue(yourCartPage.isAPPLogoDisplayed(),"Logo is not display!");
+        Assert.assertTrue(yourCartPage.isAPPLogoDisplayed(),"Logo is not displayed!");
         Assert.assertTrue(yourCartPage.isMenuActive(),"Menu is not active");
-        Assert.assertTrue(yourCartPage.isShoppingCartDisplayed(),"ShoppingCart is not display");
-        Assert.assertTrue(yourCartPage.isLabelDisplayed(),"Label is not display");
-        Assert.assertTrue(yourCartPage.isFooterDisplayed(), "Footer is not display");
-
-        if (yourCartPage.checkNumOfCart() != 0){
+        Assert.assertTrue(yourCartPage.isShoppingCartDisplayed(),"ShoppingCart is not displayed");
+        Assert.assertTrue(yourCartPage.isLabelDisplayed(),"Label is not displayed");
+        Assert.assertTrue(yourCartPage.isFooterDisplayed(), "Footer is not displayed");
+        Assert.assertTrue(yourCartPage.isBackImageDisplayed(),"Back image is not displayed!");
+        if (yourCartPage.checkNumOfCart() != 0 && yourCartPage.checkNumOfCart() == selectedProducts.size()){
             Assert.assertTrue(yourCartPage.isProductInfoEnough(),"Information of products is not enough.");
         }
     }
@@ -55,7 +56,8 @@ public class YourCartPageTest extends Hook {
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "URL mismatch!");
         Assert.assertEquals(yourCartPage.getTitleYourCartPage(), "Your Cart", "Title mismatch!");
 
-        Assert.assertTrue(yourCartPage.isContinueButtonActive(),"ShoppingCart is not display!");
+        yourCartPage.clickContinueButton();
+        Assert.assertEquals(driver.getCurrentUrl(),"https://www.saucedemo.com/inventory.html","Inventory Page is not display!");
     }
 
     @Test
@@ -64,29 +66,54 @@ public class YourCartPageTest extends Hook {
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "URL mismatch!");
         Assert.assertEquals(yourCartPage.getTitleYourCartPage(), "Your Cart", "Title mismatch!");
 
-        Assert.assertTrue(yourCartPage.isCheckoutButtonActive(),"ShoppingCart is not display!");
+        yourCartPage.clickCheckoutButton();
+        Assert.assertEquals(driver.getCurrentUrl(),"https://www.saucedemo.com/checkout-step-one.html","ShoppingCart is not display!");
     }
 
     @Test
-    public void checkProductInCart(){
+    public void checkProductInCartAfterAdd(){
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "URL mismatch!");
         Assert.assertEquals(yourCartPage.getTitleYourCartPage(), "Your Cart", "Title mismatch!");
 
         String productName = "Sauce Labs Backpack";
         //Add to cart
+        yourCartPage.clickContinueButton();
+        Assert.assertEquals(driver.getCurrentUrl(),"https://www.saucedemo.com/inventory.html","Inventory Page is not display!");
         inventoryPage.clickAddToCart(productName);
-        Assert.assertTrue(yourCartPage.isProductsInCartCorrect(selectedProducts), "Information of products in Shopping Cart is incorrect!");
-
-        //Remove from cart
-        yourCartPage.clickRemoveButton(productName);
-        Assert.assertTrue(yourCartPage.isProductsInCartCorrect(selectedProducts), "Information of products in Shopping Cart is incorrect!");
-
-        //Remove from InventoryPage
-        inventoryPage.clickAddToCart(productName);
-        Assert.assertTrue(yourCartPage.isProductsInCartCorrect(selectedProducts), "Information of products in Shopping Cart is incorrect!");
-        inventoryPage.clickRemove(productName);
+        inventoryPage.clickShoppingCart();
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "URL mismatch!");
         Assert.assertTrue(yourCartPage.isProductsInCartCorrect(selectedProducts), "Information of products in Shopping Cart is incorrect!");
     }
 
+    @Test
+    public void checkProductInCartAfterRemoveFromCart(){
+        Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "URL mismatch!");
+        Assert.assertEquals(yourCartPage.getTitleYourCartPage(), "Your Cart", "Title mismatch!");
+
+        String productName = "Sauce Labs Backpack";
+        //Remove from cart
+        yourCartPage.clickRemoveButton(productName);
+        Assert.assertTrue(yourCartPage.isProductsInCartCorrect(selectedProducts), "Information of products in Shopping Cart is incorrect!");
+    }
+
+    @Test
+    public void checkProductInCartAfterRemoveFromInventoryPage(){
+        Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "URL mismatch!");
+        Assert.assertEquals(yourCartPage.getTitleYourCartPage(), "Your Cart", "Title mismatch!");
+
+        String productName = "Sauce Labs Backpack";
+
+        //Remove from InventoryPage
+        yourCartPage.clickContinueButton();
+        Assert.assertEquals(driver.getCurrentUrl(),"https://www.saucedemo.com/inventory.html","Inventory Page is not display!");
+        if(inventoryPage.isButtonAddToCart(productName)){
+            inventoryPage.clickAddToCart(productName);
+            Assert.assertFalse(inventoryPage.isButtonAddToCart(productName), "Remove button for " + productName + " is not displayed!");
+        }
+        inventoryPage.clickRemove(productName);
+        Assert.assertTrue(yourCartPage.isProductsInCartCorrect(selectedProducts), "Information of products in Shopping Cart is incorrect!");
+    }
 }

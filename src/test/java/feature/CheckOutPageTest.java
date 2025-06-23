@@ -10,8 +10,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import untils.Hook;
 
-import static untils.TestContext.selectedProducts;
-
 public class CheckOutPageTest extends Hook {
     LoginPage loginPage;
     InventoryPage inventoryPage;
@@ -30,17 +28,26 @@ public class CheckOutPageTest extends Hook {
         inventoryPage = new InventoryPage(driver);
         yourCartPage = new YourCartPage(driver);
         checkOutPage = new CheckOutPage(driver);
-        selectedProducts.clear();
-
-        inventoryPage.clickAddToCart("Sauce Labs Backpack");
-        inventoryPage.clickAddToCart("Sauce Labs Fleece Jacket");
-        inventoryPage.clickShoppingCart();
-        yourCartPage.clickCheckoutButton();
     }
 
+    private void setupEmptyCart() {
+        inventoryPage.clickShoppingCart();
+        Assert.assertEquals(yourCartPage.checkNumOfCart(), 0, "Cart is not empty!");
+    }
+
+    private void setupCartWithProducts() {
+        inventoryPage.clickAddToCart("Sauce Labs Backpack");
+        inventoryPage.clickAddToCart("Sauce Labs Bike Light");
+        inventoryPage.clickShoppingCart();
+        Assert.assertTrue(yourCartPage.checkNumOfCart() > 0, "Cart is empty!");
+    }
 
     @Test
     public void checkCheckOutInformationPageUI(){
+        setupCartWithProducts();
+
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
         Assert.assertEquals(checkOutPage.getTitleCheckOutPage(), "Checkout: Your Information", "Title mismatch!");
@@ -51,8 +58,23 @@ public class CheckOutPageTest extends Hook {
         Assert.assertTrue(checkOutPage.isFooterDisplayed(),"Footer is not display");
     }
 
+
     @Test
-    public void testCancelCheckoutInformationWhenCartNotEmpty(){
+    public void testCheckoutWithCartEmpty(){
+        Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "URL mismatch!");
+
+        setupEmptyCart();
+        yourCartPage.clickCheckoutButton();
+        //chỉ checkout với số lượng sản phẩm trong giỏ lớn hơn 0
+        Assert.assertEquals(driver.getCurrentUrl(),"https://www.saucedemo.com/cart.html","URL mismatch!");
+    }
+
+    @Test
+    public void testCancelCheckoutInformation(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 
@@ -63,6 +85,9 @@ public class CheckOutPageTest extends Hook {
 
     @Test
     public void testCheckoutInformationSuccessfullyWhenCartNotEmpty(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 
@@ -75,6 +100,9 @@ public class CheckOutPageTest extends Hook {
 
     @Test
     public void testCheckoutInformationWhenCartNotEmptyWithEmptyFirstName(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 
@@ -82,11 +110,15 @@ public class CheckOutPageTest extends Hook {
         checkOutPage.clickContinueButton();
         // Xác nhận báo lỗi
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "Should stay on checkout information page!");
+        Assert.assertTrue(checkOutPage.isErrorIconDisplayed(),"Error icon is not displayed");
         Assert.assertTrue(checkOutPage.getErrorMessage().contains("is required"), "Unexpected error message!");
     }
 
     @Test
     public void testCheckoutInformationWhenCartNotEmptyWithEmptyLastName(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 
@@ -94,11 +126,15 @@ public class CheckOutPageTest extends Hook {
         checkOutPage.clickContinueButton();
         // Xác nhận báo lỗi
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "Should stay on checkout information page!");
+        Assert.assertTrue(checkOutPage.isErrorIconDisplayed(),"Error icon is not displayed");
         Assert.assertTrue(checkOutPage.getErrorMessage().contains("is required"), "Unexpected error message!");
     }
 
     @Test
     public void testCheckoutInformationWhenCartNotEmptyWithEmptyPostalCode(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 
@@ -106,11 +142,15 @@ public class CheckOutPageTest extends Hook {
         checkOutPage.clickContinueButton();
         // Xác nhận báo lỗi
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "Should stay on checkout information page!");
+        Assert.assertTrue(checkOutPage.isErrorIconDisplayed(),"Error icon is not displayed");
         Assert.assertTrue(checkOutPage.getErrorMessage().contains("is required"), "Unexpected error message!");
     }
 
     @Test
-    public void checkCloseErrorContainersOnCheckOutInformationPageWithCartNotEmpty(){
+    public void testCloseErrorContainersOnCheckOutInformationPageWithCartNotEmpty(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 
@@ -122,7 +162,10 @@ public class CheckOutPageTest extends Hook {
     }
 
     @Test
-    public void checkCheckOutOverviewPageUIWhenCartNotEmpty(){
+    public void testCheckOutOverviewPageUIWhenCartNotEmpty(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 
@@ -147,6 +190,9 @@ public class CheckOutPageTest extends Hook {
 
     @Test
     public void checkProductsOnInvoiceWhenCartNotEmpty(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 
@@ -159,6 +205,9 @@ public class CheckOutPageTest extends Hook {
 
     @Test
     public void checkPriceTotalOfInvoiceWhenCartNotEmpty(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 
@@ -169,7 +218,10 @@ public class CheckOutPageTest extends Hook {
     }
 
     @Test
-    public void checkCancelFromOverviewWhenCartNotEmpty(){
+    public void testCancelFromOverviewWhenCartNotEmpty(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 
@@ -182,7 +234,10 @@ public class CheckOutPageTest extends Hook {
     }
 
     @Test
-    public void checkFinishCheckoutWhenCartNotEmpty(){
+    public void testFinishCheckoutWhenCartNotEmpty(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 
@@ -196,7 +251,10 @@ public class CheckOutPageTest extends Hook {
     }
 
     @Test
-    public void checkBackHomeButtonWhenCartNotEmpty(){
+    public void testBackHomeButtonWhenCartNotEmpty(){
+        setupCartWithProducts();
+        yourCartPage.clickCheckoutButton();
+
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html", "URL mismatch!");
 

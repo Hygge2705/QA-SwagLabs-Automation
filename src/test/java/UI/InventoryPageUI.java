@@ -24,7 +24,6 @@ public class InventoryPageUI {
     public static final By INVENTORY_ITEM = By.className("inventory_item");
     public static final By PRODUCT_IMAGE = By.className("inventory_item_img");
     public static final By PRODUCT_NAME = By.className("inventory_item_name");
-    public static final By PRODUCT_DESCRIPTION = By.cssSelector("[data-test='inventory-item-desc']");
     public static final By PRODUCT_PRICE = By.className("inventory_item_price");
     public static final By ADD_TO_CART_BUTTON = By.cssSelector("button[data-test^='add-to-cart']");
     public static final By REMOVE_FROM_CART_BUTTON = By.cssSelector("button[data-test^='remove']");

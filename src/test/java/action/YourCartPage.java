@@ -12,7 +12,6 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static untils.TestContext.selectedProducts;
 
@@ -79,16 +78,18 @@ public class YourCartPage extends Hook {
                 && driver.findElement(YourCartPageUI.FOOTER_TEXT).isDisplayed();
     }
 
-    public boolean isContinueButtonActive(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(YourCartPageUI.CONTINUE_SHOPPING_BUTTON));
-        driver.findElement(YourCartPageUI.CONTINUE_SHOPPING_BUTTON).click();
-        return Objects.equals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
+    public boolean isBackImageDisplayed(){
+        return driver.findElement(YourCartPageUI.BACK_IMAGE).isDisplayed();
     }
 
-    public boolean isCheckoutButtonActive(){
+    public void clickContinueButton(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(YourCartPageUI.CONTINUE_SHOPPING_BUTTON));
+        driver.findElement(YourCartPageUI.CONTINUE_SHOPPING_BUTTON).click();
+    }
+
+    public void clickCheckoutButton(){
         wait.until(ExpectedConditions.visibilityOfElementLocated(YourCartPageUI.CHECKOUT_BUTTON));
         driver.findElement(YourCartPageUI.CHECKOUT_BUTTON).click();
-        return Objects.equals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html");
     }
 
     public boolean isProductInfoEnough(){
@@ -106,15 +107,13 @@ public class YourCartPage extends Hook {
         return true;
     }
 
-
-
     public boolean isProductsInCartCorrect(Map<String, String> expectedProducts) {
         List<WebElement> itemsInCart = driver.findElements(YourCartPageUI.CART_ITEM);
         if (itemsInCart.size()== expectedProducts.size()){
             for (WebElement item : itemsInCart) {
                 String name = item.findElement(YourCartPageUI.NAME_OF_ITEM).getText();
                 String price = item.findElement(YourCartPageUI.PRICE_OF_ITEM).getText();
-                if (!expectedProducts.get(name).equals(price) || !expectedProducts.containsKey(name)){
+                if (!expectedProducts.containsKey(name) || !expectedProducts.get(name).equals(price)){
                     return false;
                 }
             }
@@ -133,11 +132,6 @@ public class YourCartPage extends Hook {
                 break;
             }
         }
-    }
-
-    public void clickCheckoutButton(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(YourCartPageUI.CHECKOUT_BUTTON));
-        driver.findElement(YourCartPageUI.CHECKOUT_BUTTON).click();
     }
 
     public int checkNumOfCart(){

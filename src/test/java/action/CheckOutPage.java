@@ -4,7 +4,6 @@ import UI.CheckOutPageUI;
 import UI.LoginPageUI;
 import UI.YourCartPageUI;
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,14 +13,12 @@ import untils.Hook;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static untils.TestContext.selectedProducts;
 
 public class CheckOutPage extends Hook {
     WebDriver driver;
     WebDriverWait wait;
-
     public CheckOutPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -105,6 +102,9 @@ public class CheckOutPage extends Hook {
         return !driver.findElements(CheckOutPageUI.ERROR_MESSAGE).isEmpty();
     }
 
+    public boolean isErrorIconDisplayed(){
+        return !driver.findElements(CheckOutPageUI.ERROR_ICON).isEmpty();
+    }
 
     //3. Checkout: Overview
     public boolean isLabelDisplayed() {
@@ -137,7 +137,7 @@ public class CheckOutPage extends Hook {
     }
 
     public boolean areProductsSelected() {
-        if (driver.findElements(CheckOutPageUI.CART_ITEM).size() == selectedProducts.size()) {
+        if (driver.findElements(CheckOutPageUI.CART_ITEM).size() == selectedProducts.size() && !selectedProducts.isEmpty()) {
             for (WebElement product : driver.findElements(CheckOutPageUI.CART_ITEM)) {
                 String name = product.findElement(CheckOutPageUI.NAME_OF_ITEM).getText();
                 String price = product.findElement(YourCartPageUI.PRICE_OF_ITEM).getText();
@@ -208,12 +208,5 @@ public class CheckOutPage extends Hook {
         wait.until(ExpectedConditions.visibilityOfElementLocated(CheckOutPageUI.BACK_HOME_BUTTON));
         driver.findElement(CheckOutPageUI.BACK_HOME_BUTTON).click();
     }
-
-    public boolean isBackHomeButtonActive() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(CheckOutPageUI.COMPLETED_HEADER));
-        driver.findElement(CheckOutPageUI.FINISH_CHECKOUT_BUTTON).click();
-        return Objects.equals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
-    }
-
 
 }

@@ -212,9 +212,9 @@ public class InventoryPage extends Hook {
             if (name.equalsIgnoreCase(productName)) {
                 if (!product.findElements(InventoryPageUI.ADD_TO_CART_BUTTON).isEmpty()){
                     String price = product.findElement(InventoryPageUI.PRODUCT_PRICE).getText().trim();
-                    selectedProducts.put(productName, price);
                     product.findElement(InventoryPageUI.ADD_TO_CART_BUTTON).click();
                     wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.REMOVE_FROM_CART_BUTTON));
+                    selectedProducts.put(productName, price);
                     break;
                 }
             }
@@ -226,9 +226,9 @@ public class InventoryPage extends Hook {
             String name = product.findElement(InventoryPageUI.PRODUCT_NAME).getText().trim();
             if (name.equalsIgnoreCase(productName)) {
                 if (!product.findElements(InventoryPageUI.REMOVE_FROM_CART_BUTTON).isEmpty()){
-                    selectedProducts.remove(productName);
                     product.findElement(InventoryPageUI.REMOVE_FROM_CART_BUTTON).click();
                     wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.ADD_TO_CART_BUTTON));
+                    selectedProducts.remove(productName);
                     break;
                 }
             }
@@ -240,7 +240,7 @@ public class InventoryPage extends Hook {
             String name = product.findElement(InventoryPageUI.PRODUCT_NAME).getText().trim();
             if (name.equalsIgnoreCase(productName)) {
                 product.findElement(InventoryPageUI.PRODUCT_NAME).click();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.PRODUCT_DESCRIPTION));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.BACK_BUTTON));
                 break;
             }
         }
@@ -250,7 +250,7 @@ public class InventoryPage extends Hook {
             String name = product.findElement(InventoryPageUI.PRODUCT_NAME).getText().trim();
             if (name.equalsIgnoreCase(productName)) {
                 product.findElement(InventoryPageUI.PRODUCT_IMAGE).click();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.PRODUCT_DESCRIPTION));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.BACK_BUTTON));
                 break;
             }
         }
