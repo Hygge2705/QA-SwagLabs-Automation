@@ -24,7 +24,7 @@ public class YourCartPageUI {
 
     //item
     public static final By CART_ITEM = By.className("cart_item");
-    public static final By QTY_OF_IEM = By.className("cart_quantity");
+    public static final By QTY_OF_ITEM = By.className("cart_quantity");
     public static final By NAME_OF_ITEM = By.className("inventory_item_name");
     public static final By DESC_OF_ITEM = By.className("inventory_item_desc");
     public static final By PRICE_OF_ITEM = By.className("inventory_item_price");

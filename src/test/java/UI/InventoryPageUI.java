@@ -14,7 +14,7 @@ public class InventoryPageUI {
     public static final By RESET_APP_STATE_LINK = By.id("reset_sidebar_link");
 
     //Sort_by
-    public static final By SORY_BY = By.cssSelector("[data-test='product-sort-container']");
+    public static final By SORt_BY = By.cssSelector("[data-test='product-sort-container']");
     public static final By SORT_BY_NAME_AZ = By.cssSelector("[value='az']");
     public static final By SORT_BY_NAME_ZA = By.cssSelector("[value='za']");
     public static final By SORT_BY_PRICE_LOW = By.cssSelector("[value='lohi']");

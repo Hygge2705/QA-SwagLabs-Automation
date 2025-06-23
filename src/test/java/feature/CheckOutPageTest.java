@@ -30,11 +30,6 @@ public class CheckOutPageTest extends Hook {
         checkOutPage = new CheckOutPage(driver);
     }
 
-    private void setupEmptyCart() {
-        inventoryPage.clickShoppingCart();
-        Assert.assertEquals(yourCartPage.checkNumOfCart(), 0, "Cart is not empty!");
-    }
-
     private void setupCartWithProducts() {
         inventoryPage.clickAddToCart("Sauce Labs Backpack");
         inventoryPage.clickAddToCart("Sauce Labs Bike Light");
@@ -61,12 +56,13 @@ public class CheckOutPageTest extends Hook {
 
     @Test
     public void testCheckoutWithCartEmpty(){
-        setupEmptyCart();
+        checkOutPage.clickResetAppState();
+        inventoryPage.clickShoppingCart();
         Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "URL mismatch!");
 
         yourCartPage.clickCheckoutButton();
-        //chỉ checkout với số lượng sản phẩm trong giỏ lớn hơn 0
+        //chỉ cho phép checkout với số lượng sản phẩm trong giỏ lớn hơn 0
         Assert.assertEquals(driver.getCurrentUrl(),"https://www.saucedemo.com/cart.html","URL mismatch!");
     }
 

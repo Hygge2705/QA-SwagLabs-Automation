@@ -55,6 +55,13 @@ public class InventoryPage extends Hook {
         return true;
     }
 
+    public void clickResetAppState(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.MENU));
+        driver.findElement(InventoryPageUI.MENU).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.RESET_APP_STATE_LINK));
+        driver.findElement(InventoryPageUI.RESET_APP_STATE_LINK).click();
+    }
+
     public String getTitleInventoryPage(){
         wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.PAGE_TITLE));
         return driver.findElement(InventoryPageUI.PAGE_TITLE).getText();
@@ -78,8 +85,8 @@ public class InventoryPage extends Hook {
     }
 
     public boolean isSortByActive(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.SORY_BY));
-        driver.findElement(InventoryPageUI.SORY_BY).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.SORt_BY));
+        driver.findElement(InventoryPageUI.SORt_BY).click();
         return driver.findElement(InventoryPageUI.SORT_BY_NAME_AZ).isDisplayed()
                 && driver.findElement(InventoryPageUI.SORT_BY_NAME_ZA).isDisplayed()
                 && driver.findElement(InventoryPageUI.SORT_BY_PRICE_LOW).isDisplayed()
@@ -104,12 +111,12 @@ public class InventoryPage extends Hook {
     }
 
     public void clickToSortByNameAZ(){
-        driver.findElement(InventoryPageUI.SORY_BY).click();
+        driver.findElement(InventoryPageUI.SORt_BY).click();
         driver.findElement(InventoryPageUI.SORT_BY_NAME_AZ).click();
     }
 
     public void clickToSortByNameZA(){
-        driver.findElement(InventoryPageUI.SORY_BY).click();
+        driver.findElement(InventoryPageUI.SORt_BY).click();
         driver.findElement(InventoryPageUI.SORT_BY_NAME_ZA).click();
 
     }

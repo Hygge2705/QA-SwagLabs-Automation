@@ -17,6 +17,7 @@ public class YourCartPageTest extends Hook {
 
     @BeforeMethod
     public void preToTest(){
+        selectedProducts.clear();
         //Truy cập vào trang web và đăng nhập
         driver.get("https://www.saucedemo.com/");
         loginPage = new LoginPage(driver);
@@ -30,8 +31,8 @@ public class YourCartPageTest extends Hook {
         loginPage.inputLogin("standard_user", "secret_sauce");
         loginPage.clickLoginButton();
         inventoryPage.clickShoppingCart();
-    }
 
+    }
 
     @Test
     public void checkYourCartPageUI(){

@@ -17,6 +17,7 @@ public class InventoryPageTest extends Hook {
 
     @BeforeMethod
     public void preToTest(){
+        selectedProducts.clear();
         //Truy cập vào trang web và đăng nhập
         driver.get("https://www.saucedemo.com/");
         loginPage = new LoginPage(driver);
@@ -80,8 +81,8 @@ public class InventoryPageTest extends Hook {
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "URL mismatch!");
         Assert.assertEquals(inventoryPage.getTitleInventoryPage(), "Products", "Title mismatch!");
 
+        inventoryPage.clickResetAppState();
         String productName = "Sauce Labs Backpack";
-
         inventoryPage.clickProductName(productName);
         Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("/inventory-item.html?id="));
 

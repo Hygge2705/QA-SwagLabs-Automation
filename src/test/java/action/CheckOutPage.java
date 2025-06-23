@@ -58,6 +58,13 @@ public class CheckOutPage extends Hook {
         return true;
     }
 
+    public void clickResetAppState(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(CheckOutPageUI.MENU));
+        driver.findElement(CheckOutPageUI.MENU).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(CheckOutPageUI.RESET_APP_STATE_LINK));
+        driver.findElement(CheckOutPageUI.RESET_APP_STATE_LINK).click();
+    }
+
     public String getTitleCheckOutPage() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(CheckOutPageUI.PAGE_TITLE));
         return driver.findElement(CheckOutPageUI.PAGE_TITLE).getText();

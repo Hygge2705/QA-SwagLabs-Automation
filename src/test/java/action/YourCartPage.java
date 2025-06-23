@@ -10,6 +10,7 @@ import untils.Hook;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,7 +97,7 @@ public class YourCartPage extends Hook {
         wait.until(ExpectedConditions.visibilityOfElementLocated(YourCartPageUI.CART_ITEM));
 
         for (WebElement product : driver.findElements(YourCartPageUI.CART_ITEM)){
-            if (!product.findElement(YourCartPageUI.QTY_OF_IEM).isDisplayed()
+            if (!product.findElement(YourCartPageUI.QTY_OF_ITEM).isDisplayed()
                 || !product.findElement(YourCartPageUI.NAME_OF_ITEM).isDisplayed()
                 || !product.findElement(YourCartPageUI.DESC_OF_ITEM).isDisplayed()
                 || !product.findElement(YourCartPageUI.PRICE_OF_ITEM).isDisplayed()
@@ -105,6 +106,17 @@ public class YourCartPage extends Hook {
             }
         }
         return true;
+    }
+
+    // Trong YourCartPage
+    public Map<String, String> getProductsInCart() {
+        Map<String, String> products = new LinkedHashMap<>();
+        for (WebElement item : driver.findElements(YourCartPageUI.CART_ITEM)) {
+            String name = item.findElement(YourCartPageUI.NAME_OF_ITEM).getText().trim();
+            String price = item.findElement(YourCartPageUI.PRICE_OF_ITEM).getText().trim();
+            products.put(name, price);
+        }
+        return products;
     }
 
     public boolean isProductsInCartCorrect(Map<String, String> expectedProducts) {
