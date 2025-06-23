@@ -7,6 +7,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import untils.Hook;
 
+import java.util.Objects;
+
+import static untils.TestContext.selectedProducts;
+
 public class InventoryPageTest extends Hook {
     InventoryPage inventoryPage;
     LoginPage loginPage;
@@ -36,6 +40,80 @@ public class InventoryPageTest extends Hook {
         Assert.assertTrue(inventoryPage.isFooterDisplayed());
         Assert.assertTrue(inventoryPage.isShoppingCartActive(),"ShoppingCart is not display!");
     }
+
+    @Test
+    public void getDetailsByName(){
+        Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "URL mismatch!");
+        Assert.assertEquals(inventoryPage.getTitleInventoryPage(), "Products", "Title mismatch!");
+
+        inventoryPage.clickProductName("Sauce Labs Backpack");
+        Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("/inventory-item.html?id="));
+    }
+
+    @Test
+    public void getDetailsByImage(){
+        Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "URL mismatch!");
+        Assert.assertEquals(inventoryPage.getTitleInventoryPage(), "Products", "Title mismatch!");
+
+        inventoryPage.clickProductImage("Sauce Labs Backpack");
+        Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("/inventory-item.html?id="));
+    }
+
+    @Test
+    public void checkBackButtonActive(){
+        Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "URL mismatch!");
+        Assert.assertEquals(inventoryPage.getTitleInventoryPage(), "Products", "Title mismatch!");
+
+        inventoryPage.clickProductImage("Sauce Labs Backpack");
+        Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("/inventory-item.html?id="));
+
+        inventoryPage.clickBackToProductsButton();
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "URL mismatch!");
+    }
+
+    @Test
+    public void checkAddToCartFromDetailPage(){
+        Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "URL mismatch!");
+        Assert.assertEquals(inventoryPage.getTitleInventoryPage(), "Products", "Title mismatch!");
+
+        String productName = "Sauce Labs Backpack";
+
+        inventoryPage.clickProductName(productName);
+        Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("/inventory-item.html?id="));
+
+        if (selectedProducts.containsKey(productName)){
+            inventoryPage.clickRemove(productName);
+            Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
+            Assert.assertTrue(inventoryPage.isButtonAddToCart(productName), "Add to cart button for " + productName + " is not displayed!");
+        }else {
+            inventoryPage.clickAddToCart(productName);
+            Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
+            Assert.assertFalse(inventoryPage.isButtonAddToCart(productName));
+        }
+    }
+
+    @Test
+    public void checkRemoveButtonFromDetailPage(){
+        Assert.assertEquals(driver.getTitle(), "Swag Labs", "Title mismatch!");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "URL mismatch!");
+        Assert.assertEquals(inventoryPage.getTitleInventoryPage(), "Products", "Title mismatch!");
+
+        String productName1 = "Sauce Labs Backpack";
+
+        if(inventoryPage.isButtonAddToCart(productName1)){
+            inventoryPage.clickAddToCart(productName1);
+            Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
+            Assert.assertFalse(inventoryPage.isButtonAddToCart(productName1), "Remove button for " + productName1 + " is not displayed!");
+        }
+        inventoryPage.clickRemove(productName1);
+        Assert.assertEquals(inventoryPage.checkNumOfCart(), selectedProducts.size(), "Number of products in Shopping Cart is incorrect!");
+        Assert.assertTrue(inventoryPage.isButtonAddToCart(productName1));
+    }
+
 
     @Test
     public void checkSortedByNameAZ(){

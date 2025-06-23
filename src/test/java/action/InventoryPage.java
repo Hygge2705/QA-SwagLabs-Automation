@@ -211,7 +211,8 @@ public class InventoryPage extends Hook {
             String name = product.findElement(InventoryPageUI.PRODUCT_NAME).getText().trim();
             if (name.equalsIgnoreCase(productName)) {
                 if (!product.findElements(InventoryPageUI.ADD_TO_CART_BUTTON).isEmpty()){
-                    selectedProducts.put(productName, driver.findElement(InventoryPageUI.PRODUCT_PRICE).getText());
+                    String price = product.findElement(InventoryPageUI.PRODUCT_PRICE).getText().trim();
+                    selectedProducts.put(productName, price);
                     product.findElement(InventoryPageUI.ADD_TO_CART_BUTTON).click();
                     wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.REMOVE_FROM_CART_BUTTON));
                     break;
@@ -232,6 +233,31 @@ public class InventoryPage extends Hook {
                 }
             }
         }
+    }
+
+    public void clickProductName(String productName) {
+        for (WebElement product : driver.findElements(InventoryPageUI.INVENTORY_ITEM)) {
+            String name = product.findElement(InventoryPageUI.PRODUCT_NAME).getText().trim();
+            if (name.equalsIgnoreCase(productName)) {
+                product.findElement(InventoryPageUI.PRODUCT_NAME).click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.PRODUCT_DESCRIPTION));
+                break;
+            }
+        }
+    }
+    public void clickProductImage(String productName) {
+        for (WebElement product : driver.findElements(InventoryPageUI.INVENTORY_ITEM)) {
+            String name = product.findElement(InventoryPageUI.PRODUCT_NAME).getText().trim();
+            if (name.equalsIgnoreCase(productName)) {
+                product.findElement(InventoryPageUI.PRODUCT_IMAGE).click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.PRODUCT_DESCRIPTION));
+                break;
+            }
+        }
+    }
+
+    public void clickBackToProductsButton(){
+        driver.findElement(InventoryPageUI.BACK_BUTTON).click();
     }
 
     public int checkNumOfCart(){

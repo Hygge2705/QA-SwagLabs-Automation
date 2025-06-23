@@ -89,5 +89,4 @@ public class YourCartPageTest extends Hook {
         Assert.assertTrue(yourCartPage.isProductsInCartCorrect(selectedProducts), "Information of products in Shopping Cart is incorrect!");
     }
 
-
 }

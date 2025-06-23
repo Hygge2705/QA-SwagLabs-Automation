@@ -124,7 +124,6 @@ public class YourCartPage extends Hook {
         }
     }
 
-
     public void clickRemoveButton(String productName) {
         for (WebElement product : driver.findElements(YourCartPageUI.CART_ITEM)) {
             String name = product.findElement(YourCartPageUI.NAME_OF_ITEM).getText().trim();
@@ -134,6 +133,11 @@ public class YourCartPage extends Hook {
                 break;
             }
         }
+    }
+
+    public void clickCheckoutButton(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(YourCartPageUI.CHECKOUT_BUTTON));
+        driver.findElement(YourCartPageUI.CHECKOUT_BUTTON).click();
     }
 
     public int checkNumOfCart(){

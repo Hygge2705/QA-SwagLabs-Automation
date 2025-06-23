@@ -18,7 +18,7 @@ public class YourCartPageUI {
     public static final By SHOPPING_CART = By.id("shopping_cart_container");
     public static final By NUM_OF_CART = By.className("shopping_cart_badge");
 
-    //Header
+    //Label
     public static final By QTY = By.className("cart_quantity_label");
     public static final By DESC = By.className("cart_desc_label");
 

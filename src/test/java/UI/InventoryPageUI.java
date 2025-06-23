@@ -24,10 +24,12 @@ public class InventoryPageUI {
     public static final By INVENTORY_ITEM = By.className("inventory_item");
     public static final By PRODUCT_IMAGE = By.className("inventory_item_img");
     public static final By PRODUCT_NAME = By.className("inventory_item_name");
-    public static final By PRODUCT_DESCRIPTION = By.className("inventory_item_name");
+    public static final By PRODUCT_DESCRIPTION = By.cssSelector("[data-test='inventory-item-desc']");
     public static final By PRODUCT_PRICE = By.className("inventory_item_price");
     public static final By ADD_TO_CART_BUTTON = By.cssSelector("button[data-test^='add-to-cart']");
     public static final By REMOVE_FROM_CART_BUTTON = By.cssSelector("button[data-test^='remove']");
+
+    public static final By BACK_BUTTON = By.id("back-to-products");
 
     public static final By SHOPPING_CART = By.id("shopping_cart_container");
     public static final By NUM_OF_CART = By.className("shopping_cart_badge");
