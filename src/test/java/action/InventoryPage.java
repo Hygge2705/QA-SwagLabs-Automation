@@ -1,7 +1,6 @@
 package action;
 
 import UI.InventoryPageUI;
-import UI.YourCartPageUI;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,10 +11,11 @@ import untils.Hook;
 import java.time.Duration;
 import java.util.*;
 
+import static untils.TestContext.selectedProducts;
+
 public class InventoryPage extends Hook {
     WebDriver driver;
     WebDriverWait wait;
-
 
     public InventoryPage(WebDriver driver){
         this.driver = driver;
@@ -60,17 +60,25 @@ public class InventoryPage extends Hook {
         return driver.findElement(InventoryPageUI.PAGE_TITLE).getText();
     }
 
-    public boolean isShoppingCartDisplayed(){
-        return driver.findElement(InventoryPageUI.SHOPPING_CART).isDisplayed();
+    public boolean isShoppingCartActive(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.SHOPPING_CART));
+        driver.findElement(InventoryPageUI.SHOPPING_CART).click();
+        return Objects.equals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html");
     }
 
+    public boolean isFooterDisplayed(){
+        return driver.findElement(InventoryPageUI.LOGO_FACEBOOK).isDisplayed()
+                && driver.findElement(InventoryPageUI.LOGO_TWITTER).isDisplayed()
+                && driver.findElement(InventoryPageUI.LOGO_LINKEDIN).isDisplayed()
+                && driver.findElement(InventoryPageUI.FOOTER_TEXT).isDisplayed();
+    }
 
     public int getInventoryCount(){
         return driver.findElements(InventoryPageUI.INVENTORY_ITEM).size();
     }
 
     public boolean isSortByActive(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.MENU));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.SORY_BY));
         driver.findElement(InventoryPageUI.SORY_BY).click();
         return driver.findElement(InventoryPageUI.SORT_BY_NAME_AZ).isDisplayed()
                 && driver.findElement(InventoryPageUI.SORT_BY_NAME_ZA).isDisplayed()
@@ -144,6 +152,7 @@ public class InventoryPage extends Hook {
 //        //Tạo danh sách tên đã sort by A-Z
 //        List<String> expectedListNames = new ArrayList<>(listProductNames);
 //        expectedListNames.sort(String::compareToIgnoreCase);
+//        //reverse để được danh sách từ Z-A
 //        Collections.reverse(expectedListNames);
 //
 //        return listProductNames.equals(expectedListNames);
@@ -182,13 +191,31 @@ public class InventoryPage extends Hook {
     }
 
 // 3. Check Add to cart /Remove
+    public boolean isButtonAddToCart(String productName) {
+        for (WebElement product : driver.findElements(InventoryPageUI.INVENTORY_ITEM)) {
+            String name = product.findElement(InventoryPageUI.PRODUCT_NAME).getText().trim();
+            if (name.equalsIgnoreCase(productName)) {
+                if (!product.findElements(InventoryPageUI.ADD_TO_CART_BUTTON).isEmpty()){
+                    wait.until(ExpectedConditions.visibilityOf(product.findElement(InventoryPageUI.ADD_TO_CART_BUTTON)));
+                    return product.findElement(InventoryPageUI.ADD_TO_CART_BUTTON).isDisplayed();
+                }else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
     public void clickAddToCart(String productName) {
         for (WebElement product : driver.findElements(InventoryPageUI.INVENTORY_ITEM)) {
             String name = product.findElement(InventoryPageUI.PRODUCT_NAME).getText().trim();
-            wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.ADD_TO_CART_BUTTON));
             if (name.equalsIgnoreCase(productName)) {
-                product.findElement(InventoryPageUI.ADD_TO_CART_BUTTON).click();
-                break;
+                if (!product.findElements(InventoryPageUI.ADD_TO_CART_BUTTON).isEmpty()){
+                    selectedProducts.put(productName, driver.findElement(InventoryPageUI.PRODUCT_PRICE).getText());
+                    product.findElement(InventoryPageUI.ADD_TO_CART_BUTTON).click();
+                    wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.REMOVE_FROM_CART_BUTTON));
+                    break;
+                }
             }
         }
     }
@@ -196,26 +223,27 @@ public class InventoryPage extends Hook {
     public void clickRemove(String productName) {
         for (WebElement product : driver.findElements(InventoryPageUI.INVENTORY_ITEM)) {
             String name = product.findElement(InventoryPageUI.PRODUCT_NAME).getText().trim();
-            wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.REMOVE_FROM_CART_BUTTON));
             if (name.equalsIgnoreCase(productName)) {
-                product.findElement(InventoryPageUI.REMOVE_FROM_CART_BUTTON).click();
-                break;
+                if (!product.findElements(InventoryPageUI.REMOVE_FROM_CART_BUTTON).isEmpty()){
+                    selectedProducts.remove(productName);
+                    product.findElement(InventoryPageUI.REMOVE_FROM_CART_BUTTON).click();
+                    wait.until(ExpectedConditions.visibilityOfElementLocated(InventoryPageUI.ADD_TO_CART_BUTTON));
+                    break;
+                }
             }
         }
     }
 
-    public String checkNumOfCart(){
-        return driver.findElement(InventoryPageUI.ITEMS_IN_CART).getText();
+    public int checkNumOfCart(){
+        if(!driver.findElements(InventoryPageUI.NUM_OF_CART).isEmpty()) {
+            return Integer.parseInt(driver.findElement(InventoryPageUI.NUM_OF_CART).getText().trim());
+        } else {
+            return 0;
+        }
     }
 
-    public void isSelectedProducts(){
-        List<WebElement> itemsInCart = driver.findElements(YourCartPageUI.ITEM_IN_SHOPPING_CART);
-
-    }
-
-// 4. Your Cart
     public void clickShoppingCart(){
-        driver.findElement(InventoryPageUI.SHOPPING_CART);
+        driver.findElement(InventoryPageUI.SHOPPING_CART).click();
     }
 
 }
