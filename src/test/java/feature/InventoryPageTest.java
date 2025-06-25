@@ -5,11 +5,11 @@ import action.LoginPage;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import untils.Hook;
+import utils.Hook;
 
 import java.util.Objects;
 
-import static untils.TestContext.selectedProducts;
+import static utils.TestContext.selectedProducts;
 
 public class InventoryPageTest extends Hook {
     InventoryPage inventoryPage;

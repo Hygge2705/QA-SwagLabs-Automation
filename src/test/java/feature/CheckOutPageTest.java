@@ -8,7 +8,7 @@ import action.YourCartPage;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import untils.Hook;
+import utils.Hook;
 
 public class CheckOutPageTest extends Hook {
     LoginPage loginPage;

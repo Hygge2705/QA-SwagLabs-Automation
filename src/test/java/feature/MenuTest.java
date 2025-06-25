@@ -5,7 +5,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import untils.Hook;
+import utils.Hook;
 import action.LoginPage;
 import action.InventoryPage;
 import org.testng.annotations.BeforeMethod;

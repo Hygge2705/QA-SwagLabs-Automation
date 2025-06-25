@@ -4,7 +4,7 @@ import action.LoginPage;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import untils.Hook;
+import utils.Hook;
 
 public class LoginPageTest extends Hook {
     LoginPage loginPage;

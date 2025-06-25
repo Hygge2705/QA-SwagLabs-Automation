@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import untils.Hook;
+import utils.Hook;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static untils.TestContext.selectedProducts;
+import static utils.TestContext.selectedProducts;
 
 public class YourCartPage extends Hook {
     WebDriver driver;

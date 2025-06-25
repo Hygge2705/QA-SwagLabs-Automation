@@ -6,9 +6,9 @@ import action.YourCartPage;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import untils.Hook;
+import utils.Hook;
 
-import static untils.TestContext.selectedProducts;
+import static utils.TestContext.selectedProducts;
 
 public class YourCartPageTest extends Hook {
     YourCartPage yourCartPage;
